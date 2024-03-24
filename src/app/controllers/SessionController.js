@@ -27,7 +27,14 @@ class SessionController {
       where: {
         email: email,
       },
-      attributes: ["id_user", "name", "admin", "password_hash"],
+      attributes: [
+        "id_user",
+        "username",
+        "perfil",
+        "password_hash",
+        "first_name",
+        "last_name",
+      ],
     });
 
     // If no user
@@ -40,14 +47,15 @@ class SessionController {
     }
 
     // Return data and token to login
-    const { id_user, name, admin } = user;
+    const { id_user, username, first_name, last_name, perfil } = user;
+    const full_name = first_name + " " + last_name;
     return res.json({
       user: {
         id_user,
-        name,
+        username,
+        full_name,
         email,
-        password,
-        admin,
+        perfil,
       },
       token: jwt.sign({ id_user }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
