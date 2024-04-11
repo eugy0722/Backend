@@ -19,8 +19,8 @@ module.exports = {
           email: "ed072267@gmail.com",
           perfil: "admin",
           password_hash: bcrypt.hashSync(process.env.PASSWORD_ADMIN, salt),
-          created_at: new Date(),
-          updated_at: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ],
       {}

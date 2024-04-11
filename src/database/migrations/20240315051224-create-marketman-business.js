@@ -1,6 +1,6 @@
 "use strict";
 
-const table = "marketman_business";
+const table = "marketman-business";
 const models = [
   { name: "businesses", key: "id_business" },
   { name: "users", key: "id_user" },
@@ -21,11 +21,11 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      created_at: {
+      createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at: {
+      updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
       },
