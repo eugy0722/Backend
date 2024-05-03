@@ -17,7 +17,7 @@ module.exports = {
           username: "Eukaxinga",
           number_phone: "920349012",
           email: "ed072267@gmail.com",
-          perfil: "admin",
+          perfil: "Admin",
           password_hash: bcrypt.hashSync(process.env.PASSWORD_ADMIN, salt),
           createdAt: new Date(),
           updatedAt: new Date(),

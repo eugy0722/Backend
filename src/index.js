@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
 
 import routes from "./routes";
 import "./database";
@@ -15,6 +16,10 @@ class Index {
   // Middleware method to use middlewares function
   middlewares() {
     this.app.use(express.json());
+    this.app.use(
+      "/user/avatar",
+      express.static(path.resolve(__dirname, "..", "uploads"))
+    );
     this.app.use(cors());
   }
 

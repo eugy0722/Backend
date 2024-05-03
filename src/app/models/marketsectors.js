@@ -1,12 +1,12 @@
 import { Sequelize, Model } from "sequelize";
 
-// MarketmanBusiness Model
+// MarketSector Model
 class MarketSector extends Model {
   static init(sequelize) {
     super.init(
       {
         // All fields model
-        id_marketsectors: {
+        id_market_sector: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -24,8 +24,8 @@ class MarketSector extends Model {
 
   // Associate methods
   static associate(models) {
-    this.belongsTo(models.Business, { foreignKey: "id_market" });
-    this.belongsTo(models.User, { foreignKey: "id_sector" });
+    this.belongsTo(models.Market, { foreignKey: "id_market" });
+    this.belongsTo(models.Sector, { foreignKey: "id_sector" });
   }
 }
 

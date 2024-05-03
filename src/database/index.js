@@ -8,6 +8,7 @@ import MarketmanBusiness from "../app/models/marketmanbusiness";
 import Business from "../app/models/business";
 import Sectorization from "../app/models/sectorization";
 import dbConfig from "../config/config";
+import MarketSector from "../app/models/marketsectors";
 
 // An Array that group all models
 const models = [
@@ -17,6 +18,7 @@ const models = [
   Business,
   Sectorization,
   MarketmanBusiness,
+  MarketSector,
 ];
 
 // Database class to connect database and models

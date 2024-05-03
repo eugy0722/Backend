@@ -1,13 +1,21 @@
 import { Router } from "express";
+import multer from "multer";
 
+// import authMiddlewares from "./app/middlewares/auth";
+
+import multerConfig from "./config/multer";
 import SessionController from "./app/controllers/SessionController";
 import UserController from "./app/controllers/UserController";
 import MarketController from "./app/controllers/MarketController";
 import SectorController from "./app/controllers/SectorController";
 import BusinessController from "./app/controllers/BusinessController";
+import AvatarImageController from "./app/controllers/AvatarImageController";
+import MarketSectorController from "./app/controllers/Market-SectorController";
 
 // An instence of the Router
 const routes = new Router();
+
+const upload = multer(multerConfig);
 
 // The routes
 /* 
@@ -52,6 +60,18 @@ routes.post("/market/update/:id_market", MarketController.updatedMarket);
 // To Delete Market
 routes.get("/market/delete/:id_market", MarketController.destroyMarket);
 
+// To register MarketSector
+routes.post("/marketsectors/register", MarketSectorController.store);
+
+// To Read Markets Relations
+routes.get("/marketsectors/find/all/:idMarket", MarketSectorController.findAll);
+
+// Delete Markets Relations
+routes.get(
+  "/marketsectors/delete/:id_market_sector",
+  MarketSectorController.destroyMarketSector
+);
+
 // To register Sectors
 routes.post("/sector/register", SectorController.store);
 
@@ -84,5 +104,14 @@ routes.post(
 
 // To Delete Business
 routes.get("/business/delete/:id_business", BusinessController.destroyBusiness);
+
+// routes.use(authMiddlewares);
+
+// To upload image
+routes.put(
+  "/user/avatar",
+  upload.single("file"),
+  AvatarImageController.update_avatar_image
+);
 
 module.exports = routes;

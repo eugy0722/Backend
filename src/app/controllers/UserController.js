@@ -38,11 +38,13 @@ class UserController {
 
       const { id_user, username, email } = await User.create(req.body);
 
-      return res.json({
-        id_user,
-        username,
-        email,
-      });
+      return res
+        .json({
+          id_user,
+          username,
+          email,
+        })
+        .status(200);
     } catch (err) {
       console.log(err);
     }
@@ -60,6 +62,8 @@ class UserController {
         "first_name",
         "last_name",
         "perfil",
+        "avatar_image",
+        "url",
       ],
     });
 

@@ -34,6 +34,7 @@ class SessionController {
         "password_hash",
         "first_name",
         "last_name",
+        "avatar_image",
       ],
     });
 
@@ -47,20 +48,27 @@ class SessionController {
     }
 
     // Return data and token to login
-    const { id_user, username, first_name, last_name, perfil } = user;
+    const { id_user, username, first_name, last_name, perfil, avatar_image } =
+      user;
     const full_name = first_name + " " + last_name;
-    return res.json({
-      user: {
-        id_user,
-        username,
-        full_name,
-        email,
-        perfil,
-      },
-      token: jwt.sign({ id_user }, authConfig.secret, {
-        expiresIn: authConfig.expiresIn,
-      }),
-    });
+    return res
+      .json({
+        user: {
+          id_user,
+          username,
+          full_name,
+          email,
+          perfil,
+          avatar_image,
+        },
+        accessToken: jwt.sign({ id_user }, authConfig.secretAccess, {
+          expiresIn: authConfig.expiresInA,
+        }),
+        refreshToken: jwt.sign({ id_user }, authConfig.secretRefresh, {
+          expiresIn: authConfig.expiresInR,
+        }),
+      })
+      .status(200);
   }
 }
 

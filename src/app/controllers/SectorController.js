@@ -59,6 +59,30 @@ class SectorController {
 
     return res.status(200).json(sector);
   }
+
+  // Search Businesses per Sector
+  async BusinessesPerSector(req, res) {
+    const Relations = await Business.findAll({
+      raw: true,
+      where: {
+        id_sector: 
+      },
+      attributes: ['name', 'type'],
+      include: [{
+        model: Sector,
+        required: true,
+        attributes: ['name']
+      }],
+      order: [['name', 'ASC']]
+    });
+
+    if (!Relations) {
+      return res.status(404).json({ error: "Este Sector nao tem productos!" });
+    }
+
+    return res.status(200).json(business);
+  }
+
   // Update Sector -- UPDATE
   async updatedSector(req, res) {
     const { name } = req.body;

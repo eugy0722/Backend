@@ -1,5 +1,6 @@
 import Sequelize, { Model } from "sequelize";
 import bcrypt from "bcryptjs";
+require("dotenv").config();
 
 // User Model
 class User extends Model {
@@ -16,10 +17,17 @@ class User extends Model {
         last_name: Sequelize.STRING,
         username: Sequelize.STRING,
         email: Sequelize.STRING,
+        avatar_image: Sequelize.STRING,
         number_phone: Sequelize.STRING,
         perfil: Sequelize.STRING,
         password_hash: Sequelize.STRING,
         password: Sequelize.VIRTUAL,
+        url: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return `http://localhost:${process.env.PORT}/user/avatar/${this.avatar_image}`;
+          },
+        },
       },
       {
         sequelize,
