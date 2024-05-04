@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import { Op } from "sequelize";
 
 import Sector from "../models/sector";
+import Business from "../models/business";
 
 // Class Sector Controller
 class SectorController {
@@ -62,25 +63,27 @@ class SectorController {
 
   // Search Businesses per Sector
   async BusinessesPerSector(req, res) {
-    const Relations = await Business.findAll({
+    const Relations = await Sector.findAll({
       raw: true,
       where: {
-        id_sector: 
+        id_sector: req.params.id_sector,
       },
-      attributes: ['name', 'type'],
-      include: [{
-        model: Sector,
-        required: true,
-        attributes: ['name']
-      }],
-      order: [['name', 'ASC']]
+      attributes: ["id_sector", "name"],
+      include: [
+        {
+          model: Business,
+          required: true,
+          attributes: ["name", "type"],
+        },
+      ],
+      order: [["name", "ASC"]],
     });
 
     if (!Relations) {
-      return res.status(404).json({ error: "Este Sector nao tem productos!" });
+      return res.status(404).json({ error: "Este Sector não tem productos!" });
     }
 
-    return res.status(200).json(business);
+    return res.status(200).json(Relations);
   }
 
   // Update Sector -- UPDATE

@@ -52,7 +52,7 @@ class BusinessController {
 
     return res.status(200).json(businesses);
   }
-  
+
   // Search an Business -- READ
   async detailsBusiness(req, res) {
     const business = await Business.findOne({
@@ -73,17 +73,24 @@ class BusinessController {
   async BusinessesPerSector(req, res) {
     const Relations = await Business.findAll({
       raw: true,
-      attributes: ['name', 'type'],
-      include: [{
-        model: Sector,
-        required: true,
-        attributes: ['name']
-      }],
-      order: [['name', 'ASC']]
+      attributes: ["id_business", "name", "type"],
+      where: {
+        id_sector: req.params.id_sector,
+      },
+      include: [
+        {
+          model: Sector,
+          required: true,
+          attributes: ["name"],
+        },
+      ],
+      order: [["name", "ASC"]],
     });
 
     if (!Relations) {
-      return res.status(404).json({ error: "Este Sector nao tem productos!" });
+      return res
+        .status(404)
+        .json({ Mensagem: "Este Sector nao tem productos!" });
     }
 
     return res.status(200).json(Relations);

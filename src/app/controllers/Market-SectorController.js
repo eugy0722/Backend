@@ -17,7 +17,7 @@ class MarketSectorController {
       });
 
       if (!schema.isValid(req.body)) {
-        return res.status(400).json({ error: "Validation fails!" });
+        return res.status(400).json({ Mensagem: "Validação falhou!" });
       }
 
       const marketDesire = await Market.findOne({
@@ -28,7 +28,7 @@ class MarketSectorController {
       });
 
       if (!marketDesire) {
-        return res.status(401).json({ error: "Mercado nao encontrado" });
+        return res.status(401).json({ Mensagem: "Mercado não encontrado" });
       }
 
       const sectorDesire = await Sector.findOne({
@@ -39,7 +39,7 @@ class MarketSectorController {
       });
 
       if (!sectorDesire) {
-        return res.status(401).json({ error: "Sector não encontrado" });
+        return res.status(401).json({ Mensagem: "Sector não encontrado" });
       }
 
       const { id_market } = marketDesire;
@@ -56,7 +56,7 @@ class MarketSectorController {
       if (RelationExists) {
         return res
           .status(409)
-          .json({ error: "A Relacão entre os registros já existe" });
+          .json({ Mensagem: "A Relacão entre os registros já existe" });
       }
 
       const { id_market_sector } = await MarketSector.create({
@@ -95,21 +95,11 @@ class MarketSectorController {
   // Search an MarketSector -- READ
   async detailsMarketSector(req, res) {
     const Relation = await MarketSector.findOne({
-      where: {
-        id_user: req.params.id_user || req.idUser,
-      },
-      attributes: [
-        "id_user",
-        "username",
-        "email",
-        "number_phone",
-        "first_name",
-        "last_name",
-        "perfil",
-      ],
+      where: {},
+      attributes: [],
     });
 
-    if (!user) {
+    if (!Relation) {
       return res.status(400).json({ error: "User not exists!" });
     }
 

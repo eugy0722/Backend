@@ -11,6 +11,7 @@ import SectorController from "./app/controllers/SectorController";
 import BusinessController from "./app/controllers/BusinessController";
 import AvatarImageController from "./app/controllers/AvatarImageController";
 import MarketSectorController from "./app/controllers/Market-SectorController";
+import SectorizationController from "./app/controllers/SectorizationController";
 
 // An instence of the Router
 const routes = new Router();
@@ -44,6 +45,9 @@ routes.post("/user/update/:id_user", UserController.updatedUser);
 
 // To Delete User
 routes.get("/user/delete/:id_user", UserController.destroyUser);
+
+// Create an user Sectorizated
+routes.post("/user/sectorization/register", SectorizationController.store);
 
 // To register Markets
 routes.post("/market/register", MarketController.store);
@@ -87,6 +91,9 @@ routes.post("/sector/update/:id_sector", SectorController.updatedSector);
 // To Delete Sector
 routes.get("/sector/delete/:id_sector", SectorController.destroySector);
 
+// Get Products per Sector
+routes.get("/sector/:id_sector/products", SectorController.BusinessesPerSector);
+
 // To register Business
 routes.post("/business/register", BusinessController.store);
 
@@ -95,6 +102,12 @@ routes.get("/business/find/all", BusinessController.findAll);
 
 // To Read Business
 routes.get("/business/find/:id_business", BusinessController.detailsBusiness);
+
+// Get Products per Sector
+routes.get(
+  "/business/sector/:id_sector",
+  BusinessController.BusinessesPerSector
+);
 
 // To Update Business
 routes.post(
