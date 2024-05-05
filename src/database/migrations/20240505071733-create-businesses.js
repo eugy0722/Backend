@@ -15,11 +15,13 @@ module.exports = {
       name: {
         type: Sequelize.STRING(40),
         allowNull: false,
-        unique: true,
       },
       type: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      description: {
+        type: Sequelize.STRING(100),
       },
       id_sector: {
         type: Sequelize.INTEGER,

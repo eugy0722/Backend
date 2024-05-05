@@ -11,43 +11,52 @@ class BusinessController {
     const schema = Yup.object().shape({
       name: Yup.string().required().max(40),
       type: Yup.number().required(),
+      description: Yup.string().max(100),
       id_sector: Yup.number(),
+      price: Yup.number(),
     });
 
     if (!schema.isValid(req.body)) {
-      return res.status(400).json({ error: "Validation fails!" });
+      return res.status(400).json({ error: "Falha na validacao!" });
     }
 
-    const BusinessExists = await Business.findOne({
-      attributes: ["id_business"],
-      where: {
-        [Op.or]: {
-          name: req.body.name,
-          type: req.body.type,
-        },
-      },
-    });
+    // const BusinessExists = await Business.findOne({
+    //   attributes: ["id_business"],
+    //   where: {
+    //     [Op.or]: {
+    //       descri: req.body.name,
+    //     },
+    //   },
+    // });
 
-    if (BusinessExists) {
-      return res.status(400).json({ error: "Business already exists" });
-    }
+    // if (BusinessExists) {
+    //   return res.status(400).json({ error: "Este Negocio ja existe" });
+    // }
 
-    const { id_business, name, type, id_sector } = await Business.create(
-      req.body
-    );
+    const { id_business, name, type, id_sector, description, price } =
+      await Business.create(req.body);
 
     return res.json({
       id_business,
       name,
       type,
       id_sector,
+      description,
+      price,
     });
   }
   // Search the Businesses -- READ
   async findAll(req, res) {
     const businesses = await Business.findAll({
       order: ["name"],
-      attributes: ["id_business", "name", "type", "id_sector"],
+      attributes: [
+        "id_business",
+        "name",
+        "type",
+        "description",
+        "id_sector",
+        "price",
+      ],
     });
 
     return res.status(200).json(businesses);
@@ -59,58 +68,29 @@ class BusinessController {
       where: {
         id_business: req.params.id_business,
       },
-      attributes: ["id_business", "name", "type", "id_sector"],
+      attributes: [
+        "id_business",
+        "name",
+        "description",
+        "type",
+        "id_sector",
+        "price",
+      ],
     });
 
     if (!business) {
-      return res.status(400).json({ error: "Business not exists!" });
+      return res.status(400).json({ error: "Este Negocio nao existe" });
     }
 
     return res.status(200).json(business);
   }
 
-  // Search Businesses per Sector-- READ
-  async BusinessesPerSector(req, res) {
-    const Relations = await Business.findAll({
-      raw: true,
-      attributes: ["id_business", "name", "type"],
-      where: {
-        id_sector: req.params.id_sector,
-      },
-      include: [
-        {
-          model: Sector,
-          required: true,
-          attributes: ["name"],
-        },
-      ],
-      order: [["name", "ASC"]],
-    });
-
-    if (!Relations) {
-      return res
-        .status(404)
-        .json({ Mensagem: "Este Sector nao tem productos!" });
-    }
-
-    return res.status(200).json(Relations);
-  }
-
   // Update Business -- UPDATE
   async updatedBusiness(req, res) {
-    const { name, type } = req.body;
+    const { name, type, description, price } = req.body;
 
     try {
       if (name) {
-        const BusinessExists = await Business.findOne({
-          attributes: ["id_business"],
-          where: {
-            name: req.body.name,
-          },
-        });
-        if (BusinessExists)
-          return res.status(400).json({ error: "Business already exists" });
-
         await Business.update(
           { name },
           { where: { id_business: req.params.id_business } }
@@ -118,25 +98,30 @@ class BusinessController {
       }
 
       if (type) {
-        const BusinessExists = await Business.findOne({
-          attributes: ["id_business"],
-          where: {
-            type: req.body.type,
-          },
-        });
-        if (BusinessExists)
-          return res.status(400).json({ error: "Business already exists" });
-
         await Business.update(
           { type },
           { where: { id_business: req.params.id_business } }
         );
       }
+
+      if (price) {
+        await Business.update(
+          { price },
+          { where: { id_business: req.params.id_business } }
+        );
+      }
+
+      if (description) {
+        await Business.update(
+          { description },
+          { where: { id_business: req.params.id_business } }
+        );
+      }
     } catch {
-      return res.json({ error: "Update fails" }).status(400);
+      return res.json({ error: "Actualicao falhou" }).status(400);
     }
 
-    return res.status(200).json({ message: "Updated Successfully" });
+    return res.status(200).json({ message: "Actualizado com sucesso" });
   }
   // Destroy Business -- DELETE
   async destroyBusiness(req, res) {
@@ -147,7 +132,7 @@ class BusinessController {
         },
       });
 
-      return res.status(200).json({ message: "Deleted Successfully" });
+      return res.status(200).json({ mensagem: "Deletedo com sucesso" });
     } catch (error) {
       return res.status(400).json({ message: error });
     }

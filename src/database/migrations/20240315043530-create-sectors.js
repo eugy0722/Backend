@@ -16,13 +16,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      id_markets: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: "markets", key: "id_market" },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

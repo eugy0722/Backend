@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { Op } from "sequelize";
 
 import User from "../models/user";
 import Sector from "../models/sector";
@@ -15,18 +14,18 @@ class SectorizationController {
     });
 
     if (!schema.isValid(req.body)) {
-      return res.status(400).json({ error: "Validation fails!" });
+      return res.status(400).json({ error: "Validação falhou!" });
     }
 
     const userDesire = await User.findOne({
-      attributes: ["id_user"],
+      attributes: ["id_user", "perfil"],
       where: {
         id_user: req.body.id_marketman,
       },
     });
 
     if (!userDesire) {
-      return res.status(401).json({ error: "Utilizidor nao encontrado" });
+      return res.status(401).json({ error: "Utilizidor não encontrado" });
     }
 
     const sectorDesire = await Sector.findOne({
@@ -40,27 +39,30 @@ class SectorizationController {
       return res.status(401).json({ error: "Sector não encontrado" });
     }
 
-    const { id_user } = userDesire;
+    const { id_user, perfil } = userDesire;
     const { id_sector } = sectorDesire;
-    const id_marketman = id_user;
+
+    if (perfil === "Consumidor" || perfil === "Administrador") {
+      return res.status(401).json({ erro: "Perfil de Utilizidor restrigido" });
+    }
 
     const RelationExists = await Sectorization.findOne({
       attributes: ["id_sectorization"],
       where: {
-        id_sector,
-        id_marketman,
+        id_sector: id_sector,
+        id_marketman: id_user,
       },
     });
 
     if (RelationExists) {
       return res
         .status(409)
-        .json({ Mensagem: "A Relacão entre os registros já existe" });
+        .json({ Mensagem: "A Relação entre os registros já existe" });
     }
 
     const { id_sectorization } = await Sectorization.create({
-      id_sector,
-      id_marketman,
+      id_sector: id_sector,
+      id_marketman: id_user,
     });
 
     return res
@@ -108,7 +110,7 @@ class SectorizationController {
         },
       });
 
-      return res.status(200).json({ message: "Deleted Successfully" });
+      return res.status(200).json({ message: "Deletedo com Successo" });
     } catch (error) {
       return res.status(400).json({ message: error });
     }

@@ -12,6 +12,8 @@ import BusinessController from "./app/controllers/BusinessController";
 import AvatarImageController from "./app/controllers/AvatarImageController";
 import MarketSectorController from "./app/controllers/Market-SectorController";
 import SectorizationController from "./app/controllers/SectorizationController";
+import BusinessPerSectorsController from "./app/controllers/BusinessPerSectorsController";
+import MarketmanBusinessesController from "./app/controllers/MarketmanBusinessesController";
 
 // An instence of the Router
 const routes = new Router();
@@ -48,6 +50,9 @@ routes.get("/user/delete/:id_user", UserController.destroyUser);
 
 // Create an user Sectorizated
 routes.post("/user/sectorization/register", SectorizationController.store);
+
+// To Read Users Sectorizated
+routes.get("/user/sectorization/:id_sector", SectorizationController.findAll);
 
 // To register Markets
 routes.post("/market/register", MarketController.store);
@@ -106,7 +111,7 @@ routes.get("/business/find/:id_business", BusinessController.detailsBusiness);
 // Get Products per Sector
 routes.get(
   "/business/sector/:id_sector",
-  BusinessController.BusinessesPerSector
+  BusinessPerSectorsController.BusinessesPerSector
 );
 
 // To Update Business
@@ -117,6 +122,27 @@ routes.post(
 
 // To Delete Business
 routes.get("/business/delete/:id_business", BusinessController.destroyBusiness);
+
+// Register your commodities
+routes.post("/marketmanbusiness/register", MarketmanBusinessesController.store);
+
+// Search your commodities
+routes.post(
+  "/marketmanbusiness/exactsearch",
+  MarketmanBusinessesController.ExactCommodityBelongTo
+);
+
+// Search a commodity
+routes.post(
+  "/marketmanbusiness/similarsearch",
+  MarketmanBusinessesController.SimilarCommodityBelongTo
+);
+
+// Search commodities with filter
+routes.get(
+  "/marketmanbusiness/search/filter",
+  MarketmanBusinessesController.CommoditySearchWithFilter
+);
 
 // routes.use(authMiddlewares);
 

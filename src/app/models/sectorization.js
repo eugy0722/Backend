@@ -25,7 +25,7 @@ class Sectorization extends Model {
   // Associate methods
   static associate(models) {
     this.belongsTo(models.Sector, { foreignKey: "id_sector" });
-    this.belongsTo(models.User, { foreignKey: "id_user" });
+    this.belongsTo(models.User, { foreignKey: "id_marketman" });
   }
 }
 

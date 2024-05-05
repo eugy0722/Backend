@@ -13,6 +13,8 @@ class Business extends Model {
         },
         name: Sequelize.STRING,
         type: Sequelize.STRING,
+        price: Sequelize.INTEGER,
+        description: Sequelize.STRING,
       },
       {
         sequelize,

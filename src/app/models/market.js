@@ -12,7 +12,8 @@ class Market extends Model {
           primaryKey: true,
         },
         name: Sequelize.STRING,
-        geo: Sequelize.INTEGER,
+        latitude: Sequelize.INTEGER,
+        logitude: Sequelize.INTEGER,
       },
       {
         sequelize,

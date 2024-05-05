@@ -16,10 +16,8 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      geo: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
+      latitude: Sequelize.STRING,
+      logitude: Sequelize.STRING,
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

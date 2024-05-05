@@ -9,7 +9,8 @@ class MarketController {
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required().max(65),
-      geo: Yup.number().required(),
+      latitude: Yup.string().required(),
+      logitude: Yup.string().required(),
     });
 
     if (!schema.isValid(req.body)) {
@@ -19,10 +20,9 @@ class MarketController {
     const MarketExists = await Market.findOne({
       attributes: ["id_market"],
       where: {
-        [Op.or]: {
-          name: req.body.name,
-          geo: req.body.geo,
-        },
+        name: req.body.name,
+        latitude: req.body.latitude,
+        logitude: req.body.logitude,
       },
     });
 
@@ -30,19 +30,22 @@ class MarketController {
       return res.status(400).json({ error: "Market already exists" });
     }
 
-    const { id_market, name, geo } = await Market.create(req.body);
+    const { id_market, name, latitude, logitude } = await Market.create(
+      req.body
+    );
 
     return res.json({
       id_market,
       name,
-      geo,
+      latitude,
+      logitude,
     });
   }
   // Search the Markets -- READ
   async findAll(req, res) {
     const markets = await Market.findAll({
       order: ["name"],
-      attributes: ["id_market", "name", "geo"],
+      attributes: ["id_market", "name", "latitude", "logitude"],
     });
 
     return res.status(200).json(markets);
@@ -53,7 +56,7 @@ class MarketController {
       where: {
         id_market: req.params.id_market,
       },
-      attributes: ["id_market", "name", "geo"],
+      attributes: ["id_market", "name", "latitude", "logitude"],
     });
 
     if (!market) {
@@ -64,7 +67,7 @@ class MarketController {
   }
   // Update Market -- UPDATE
   async updatedMarket(req, res) {
-    const { name, geo } = req.body;
+    const { name, latitude, logitude } = req.body;
 
     try {
       if (name) {
@@ -83,18 +86,34 @@ class MarketController {
         );
       }
 
-      if (geo) {
+      if (latitude) {
         const MarketExists = await Market.findOne({
           attributes: ["id_market"],
           where: {
-            geo: req.body.geo,
+            latitude: req.body.latitude,
           },
         });
         if (MarketExists)
           return res.status(400).json({ error: "Market already exists" });
 
         await Market.update(
-          { geo },
+          { latitude },
+          { where: { id_market: req.params.id_market } }
+        );
+      }
+
+      if (logitude) {
+        const MarketExists = await Market.findOne({
+          attributes: ["id_market"],
+          where: {
+            latitude: req.body.logitude,
+          },
+        });
+        if (MarketExists)
+          return res.status(400).json({ error: "Market already exists" });
+
+        await Market.update(
+          { logitude },
           { where: { id_market: req.params.id_market } }
         );
       }

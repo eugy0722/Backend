@@ -9,6 +9,12 @@ const models = [
 module.exports = {
   async up(queryInterface, Sequelize) {
     return await queryInterface.createTable(table, {
+      id_marketman_business: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       id_business: {
         type: Sequelize.INTEGER,
         references: { model: models[0].name, key: models[0].key },

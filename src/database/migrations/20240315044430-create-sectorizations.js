@@ -9,6 +9,12 @@ const models = [
 module.exports = {
   async up(queryInterface, Sequelize) {
     return await queryInterface.createTable(table, {
+      id_sectorization: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       id_sector: {
         type: Sequelize.INTEGER,
         allowNull: false,

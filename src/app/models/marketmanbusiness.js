@@ -6,7 +6,7 @@ class MarketmanBusiness extends Model {
     super.init(
       {
         // All fields model
-        id_marketmanbusiness: {
+        id_marketman_business: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -14,8 +14,8 @@ class MarketmanBusiness extends Model {
       },
       {
         sequelize,
-        freezeTableName: "marketman_business",
-        tableName: "marketman_business",
+        freezeTableName: "marketman-business",
+        tableName: "marketman-business",
       }
     );
     // return this class
@@ -25,7 +25,7 @@ class MarketmanBusiness extends Model {
   // Associate methods
   static associate(models) {
     this.belongsTo(models.Business, { foreignKey: "id_business" });
-    this.belongsTo(models.User, { foreignKey: "id_user" });
+    this.belongsTo(models.User, { foreignKey: "id_marketman" });
   }
 }
 
